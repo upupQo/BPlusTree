@@ -1,6 +1,7 @@
 package ds.bplus.bptree;
 
 import ds.bplus.util.InvalidBTreeStateException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+@Slf4j
 @SuppressWarnings("WeakerAccess")
 public class BPlusTree {
 
@@ -179,7 +181,7 @@ public class BPlusTree {
     private void splitTreeNode(TreeInternalNode n, int index)
             throws IOException, InvalidBTreeStateException {
 
-//        System.out.println("-- Splitting node with index: " +
+//        log.info("-- Splitting node with index: " +
 //                aChild.getPageIndex() + " of type: " +
 //                aChild.getNodeType().toString());
 
@@ -327,7 +329,7 @@ public class BPlusTree {
             TreeLeaf l = (TreeLeaf)n;
             novf = new TreeOverflow(-1L, l.getPageIndex(),
                     generateFirstAvailablePageIndex(conf));
-//            System.out.println("Creating overflow page with index: " + novf.getPageIndex() +
+//            log.info("Creating overflow page with index: " + novf.getPageIndex() +
 //                    " for key: " + l.getKeyAt(index));
             // push the first value
             novf.pushToValueList(value);
@@ -435,12 +437,12 @@ public class BPlusTree {
             if(n.getCurrentCapacity() > 0 && n.getKeyAt(iadj) == key) {
 
                 if(unique) {
-                    //System.out.println("Duplicate entry found and unique " +
+                    //log.info("Duplicate entry found and unique " +
                     //        "flag enabled, can't add");
                     return;
                 }
 
-                //System.out.println("Duplicate found! Adding to overflow page!");
+                //log.info("Duplicate found! Adding to overflow page!");
 
                 // overflow page does not exist, yet; time to create it!
                 if(l.getOverflowPointerAt(iadj) < 0) {
@@ -775,7 +777,7 @@ public class BPlusTree {
 
         // check if we need to consolidate
         if(current.isTimeToMerge(conf)) {
-            //System.out.println("Parent needs merging (internal node)");
+            //log.info("Parent needs merging (internal node)");
             TreeNode mres = mergeOrRedistributeTreeNodes(current, parent,
                     parentPointerIndex, parentKeyIndex);
             if(mres != null) {
@@ -805,17 +807,17 @@ public class BPlusTree {
             TreeLeaf l = (TreeLeaf)current;
             // check if we actually found the key
             if(i == l.getCurrentCapacity()) {
-                //System.out.println("Key with value: " + key +
+                //log.info("Key with value: " + key +
                 //        " not found, reached limits");
                 return (new DeleteResult(key, (LinkedList<String>) null));
             } else if(key != l.getKeyAt(i)) {
-                //System.out.println("Key with value: " + key + " not found, key mismatch");
+                //log.info("Key with value: " + key + " not found, key mismatch");
                 //throw new InvalidBTreeStateException("Key not found!");
                 return (new DeleteResult(key, (LinkedList<String>) null));
             }
             else {
 
-                //System.out.println("Found the key " + key + ", removing it");
+                //log.info("Found the key " + key + ", removing it");
                 rvals = new LinkedList<>();
 
                 // we we *have* to make a choice on where to make
@@ -1405,10 +1407,10 @@ public class BPlusTree {
     private TreeNode handleRootRedistributionOrMerging(TreeNode mnode)
             throws IOException, InvalidBTreeStateException {
         if(mnode.isInternalNode()) {
-            //System.out.println("\n -- Check if Consolidating Root required");
+            //log.info("\n -- Check if Consolidating Root required");
 
             if (mnode.getCurrentCapacity() > 1) {
-                //System.out.println("\n -- Root size > 2, no consolidation");
+                //log.info("\n -- Root size > 2, no consolidation");
                 return root;
             }
 
@@ -1432,7 +1434,7 @@ public class BPlusTree {
                 // check if it's time to merge
                 if((lcap > conf.getMinLeafNodeCapacity()) &&
                         (rcap > conf.getMinLeafNodeCapacity())) {
-                    //System.out.println(" -- No need to consolidate root yet (to -> leaf)");
+                    //log.info(" -- No need to consolidate root yet (to -> leaf)");
                     return mnode;
                 }
 
@@ -1476,12 +1478,12 @@ public class BPlusTree {
             } else if(lChild.isInternalNode()) {
                 // check if it's time to merge
                 if ((lcap + rcap) >= conf.getMaxInternalNodeCapacity()) {
-                    //System.out.println(" -- No need to consolidate root yet (to -> internal)");
+                    //log.info(" -- No need to consolidate root yet (to -> internal)");
                     return mnode;
                 }
                 /*
                 else {
-                    System.out.println("-- Consolidating Root (internal -> internal)");
+                    log.info("-- Consolidating Root (internal -> internal)");
                 }
                 */
 
@@ -1498,12 +1500,12 @@ public class BPlusTree {
                 }
                 // now check if we can redistribute with prev
                 else if(pnum > 0) {
-                    //System.out.println("\t -- Redistributing right with elements from left");
+                    //log.info("\t -- Redistributing right with elements from left");
                     redistributeNodes(rIntNode, lIntNode, true, rNode, 0);
                 }
                 // merge the two nodes and promote them to root
                 else {
-                    //System.out.println("\t -- Merging leaf nodes");
+                    //log.info("\t -- Merging leaf nodes");
                     mergeNodes(lIntNode, rIntNode, splitNode.getFirstKey());
                     // update root page
                     lIntNode.setNodeType(TreeNodeType.TREE_ROOT_INTERNAL);
@@ -1555,7 +1557,7 @@ public class BPlusTree {
             throw new InvalidBTreeStateException("Both children (leaves) can't null");
         } /*
         else {
-            System.out.println("Leaf node merging/redistribution needs to happen");
+            log.info("Leaf node merging/redistribution needs to happen");
         }*/
 
         // validate neighbouring nodes
@@ -1572,7 +1574,7 @@ public class BPlusTree {
 
         // check if we can redistribute with next
         if(nnum > 0 && npar) {
-            //System.out.println("\t -- Redistributing split node with elements from next");
+            //log.info("\t -- Redistributing split node with elements from next");
             if(splitNodeIsLeftChild) {
                 redistributeNodes(splitNode, nptr, false, parent, parentKeyIndex);
             } else {
@@ -1581,7 +1583,7 @@ public class BPlusTree {
         }
         // now check if we can redistribute with prev
         else if(pnum > 0 && ppar) {
-            //System.out.println("\t -- Redistributing split node with elements from prev");
+            //log.info("\t -- Redistributing split node with elements from prev");
             if(splitNodeIsLeftChild) {
                 redistributeNodes(splitNode, pptr, true, parent, parentKeyIndex-1);
             } else {
@@ -1589,14 +1591,14 @@ public class BPlusTree {
             }
         } else if(snum > 0) {
             if(nptr != null) {
-                //System.out.println("\t -- Redistributing next node with elements from split");
+                //log.info("\t -- Redistributing next node with elements from split");
                 if(splitNodeIsLeftChild) {
                     redistributeNodes(nptr, splitNode, true, parent, parentKeyIndex);
                 } else {
                     redistributeNodes(nptr, splitNode, true, parent, parentKeyIndex+1);
                 }
             } else {
-                //System.out.println("\t -- Redistributing prev with elements from split");
+                //log.info("\t -- Redistributing prev with elements from split");
                 if(splitNodeIsLeftChild) {
                     redistributeNodes(pptr, splitNode, false, parent, parentKeyIndex-1);
                 } else {
@@ -1606,7 +1608,7 @@ public class BPlusTree {
         }
         // we can't redistribute, try merging with next
         else if(npar) {
-            //System.out.println("Merging leaf next");
+            //log.info("Merging leaf next");
             // it's the case where split node is the left node from parent
             mnode = mergeNodes(splitNode, nptr, pptr, parent,
                     parentPointerIndex, parentKeyIndex,
@@ -1614,7 +1616,7 @@ public class BPlusTree {
         }
         // last chance, try merging with prev
         else if(ppar) {
-            //System.out.println("Merging leaf prev");
+            //log.info("Merging leaf prev");
             // it's the case where split node is in the left from parent
             mnode = mergeNodes(pptr, splitNode, nptr, parent,
                     parentPointerIndex, parentKeyIndex,
@@ -1670,7 +1672,7 @@ public class BPlusTree {
                                                                int parentPointerIndex,
                                                                int parentKeyIndex)
             throws IOException, InvalidBTreeStateException {
-        //System.out.println("Internal node merging/redistribution needs to happen");
+        //log.info("Internal node merging/redistribution needs to happen");
 
         TreeInternalNode splitNode = (TreeInternalNode)mnode;
         TreeInternalNode nptr, pptr;
@@ -1691,7 +1693,7 @@ public class BPlusTree {
 
         // check if we can redistribute with the next node
         if(nnum > 0) {
-            //System.out.println(" -- Internal Redistribution to split with next");
+            //log.info(" -- Internal Redistribution to split with next");
             if(splitNodeIsLeftChild) {
                 redistributeNodes(splitNode, nptr, false, parent, parentKeyIndex);
             } else {
@@ -1700,7 +1702,7 @@ public class BPlusTree {
         }
         // check if we can redistribute with the previous node
         else if(pnum > 0) {
-            //System.out.println(" -- Internal Redistribution to split with prev");
+            //log.info(" -- Internal Redistribution to split with prev");
             if(splitNodeIsLeftChild) {
                 redistributeNodes(splitNode, pptr, true, parent, parentKeyIndex-1);
             } else {
@@ -1710,7 +1712,7 @@ public class BPlusTree {
         else if(snum > 0) {
             // check try to send items from next
             if(nptr != null) {
-                //System.out.println(" -- Internal Redistribution to next with split");
+                //log.info(" -- Internal Redistribution to next with split");
                 if(splitNodeIsLeftChild) {
                     redistributeNodes(nptr, splitNode, true, parent, parentKeyIndex);
                 } else {
@@ -1719,7 +1721,7 @@ public class BPlusTree {
             }
             // if not, try to send items from prev
             else {
-                //System.out.println(" -- Internal Redistribution to prev with split");
+                //log.info(" -- Internal Redistribution to prev with split");
                 if(splitNodeIsLeftChild) {
                     redistributeNodes(pptr, splitNode, false, parent, parentKeyIndex-1);
                 } else {
@@ -1729,7 +1731,7 @@ public class BPlusTree {
         }
         // can't redistribute; merging needs to happen, check which has t-1 elements
         else {
-            //System.out.println(" -- Internal merging actually happens");
+            //log.info(" -- Internal merging actually happens");
             // check if we can merge with the right node
             if(nptr != null && nptr.isTimeToMerge(conf)) {
                 mnode = mergeNodes(splitNode, nptr, pptr, parent,
@@ -1839,7 +1841,7 @@ public class BPlusTree {
 
         // check if we need more than one lookup page
         if (freeSlotPool.size() <= conf.getFirstLookupPageElements()) {
-            System.out.println(" -- We only need a singular page for " +
+            log.info(" -- We only need a singular page for " +
                     "overflow values" +
                     "\n\tInitial page capacity: " + freeSlotPool.size());
 
@@ -1918,7 +1920,7 @@ public class BPlusTree {
                         " does not comply with the size of the pool");
             }
 
-            System.out.println(" -- Multiple pages needed for the " +
+            log.info(" -- Multiple pages needed for the " +
                     "overflow values" + "\n\tPages needed: " + pages +
                     "\n\tInitial page capacity: " +
                     conf.getFirstLookupPageElements() +
@@ -1944,7 +1946,7 @@ public class BPlusTree {
         }
         // set the length to be max page plus one
         treeFile.setLength(calculatePageOffset(this.maxPageNumber + 1));
-        System.out.println("\n\n -- Conditioning file has been completed! " +
+        log.info("\n\n -- Conditioning file has been completed! " +
                 "\n\tPurged pages: " + (purged - this.maxPageNumber) +
                 "\n\tNew file size: " + calculatePageOffset(this.maxPageNumber + 1) +
                 " bytes");
@@ -2182,24 +2184,24 @@ public class BPlusTree {
         treeFile = new RandomAccessFile(path, stmode);
         // check if the file already exists
         if(f.exists() && !mode.contains("+")) {
-            System.out.println("File already exists (size: " + treeFile.length() +
+            log.info("File already exists (size: " + treeFile.length() +
                     " bytes), trying to read it...");
             // read the header
             conf = readFileHeader(treeFile, true);
             // read the lookup page
             initializeLookupPage(f.exists());
-            System.out.println("File seems to be valid. Loaded OK!");
+            log.info("File seems to be valid. Loaded OK!");
         }
         // if we have to start anew, do so.
         else {
-            System.out.println("Initializing the file...");
-            System.out.println("Tracking I/O performance as well");
+            log.info("Initializing the file...");
+            log.info("Tracking I/O performance as well");
             treeFile.setLength(0);
             conf = opt == null ? new BPlusConfiguration() : opt;
             initializeLookupPage(false);
             createTree();
             writeFileHeader(conf);
-            System.out.println("Done!");
+            log.info("Done!");
         }
     }
 
@@ -2260,7 +2262,7 @@ public class BPlusTree {
                 pindex = lpOvf.getNextPointer();
             }
 
-            System.out.println("-- Parsed " + parsed +
+            log.info("-- Parsed " + parsed +
                     " lookup overflow pages and the initial one, totaling: " +
                     freeSlotPool.size() + " entries");
         }
@@ -2431,15 +2433,15 @@ public class BPlusTree {
     private String conditionString(String s) {
         if(s == null) {
             s = " ";
-            //System.out.println("Cannot have a null string");
+            //log.info("Cannot have a null string");
         }
 
         if(s.length() > conf.getEntrySize()) {
-            System.out.println("Satellite length can't exceed " +
+            log.info("Satellite length can't exceed " +
                     conf.getEntrySize() + " trimming...");
             s = s.substring(0, conf.getEntrySize());
         } else if(s.length() < conf.getEntrySize()) {
-            //System.out.println("Satellite length can't be less than" +
+            //log.info("Satellite length can't be less than" +
             //        conf.getEntrySize() + ", adding whitespaces to make up");
             int add = conf.getEntrySize() - s.length();
             for(int i = 0; i < add; i++) {s = s + " ";}

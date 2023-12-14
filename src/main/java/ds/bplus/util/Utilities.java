@@ -1,12 +1,14 @@
 package ds.bplus.util;
 
 import ds.bplus.bptree.BPlusTree;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
+@Slf4j
 public class Utilities {
 
     private static final Random rand = new Random();
@@ -43,11 +45,11 @@ public class Utilities {
         long div = (to - from) / 10;
         for(long i = from; i < to; i++) {
             if (i % div == 0) {
-                System.out.println("Currently at: " + ((double) i / to) * 100 + " %");
+                log.info("Currently at: " + ((double) i / to) * 100 + " %");
             }
             bt.insertKey(i, val, unique);
         }
-        System.out.println("Done!\n");
+        log.info("Done!\n");
     }
 
     /**
@@ -125,12 +127,12 @@ public class Utilities {
     @SuppressWarnings("unused")
     public static void writeObjectToFile(LinkedList<Long> obj,
                                          String filename) throws IOException {
-        System.out.println("Writing object to: " + filename);
+        log.info("Writing object to: " + filename);
         FileOutputStream fout = new FileOutputStream(filename);
         ObjectOutputStream foutStream = new ObjectOutputStream(fout);
         foutStream.writeObject(obj);
         foutStream.close();
-        System.out.println("Writing complete to file: " + filename);
+        log.info("Writing complete to file: " + filename);
     }
 
     /**
@@ -143,7 +145,7 @@ public class Utilities {
      */
     private static LinkedList<Long> loadListFromFile(String filename)
             throws IOException, ClassNotFoundException {
-        System.out.println("Loading LinkedList<Long> object from file: " + filename);
+        log.info("Loading LinkedList<Long> object from file: " + filename);
         FileInputStream fin = new FileInputStream(filename);
         ObjectInputStream finStream = new ObjectInputStream(fin);
         @SuppressWarnings("unchecked")
