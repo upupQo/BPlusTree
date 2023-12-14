@@ -207,30 +207,30 @@ public class BPlusConfiguration {
     }
 
     public void printConfiguration() {
-        log.info("\n\nPrinting B+ Tree configuration\n");
-        log.info("Page size: " + pageSize + " (in bytes)");
-        log.info("Key size: " + keySize + " (in bytes)");
-        log.info("Entry size: " + entrySize + " (in bytes)");
-        log.info("File header size: " + headerSize + " (in bytes)");
-        log.info("Lookup space size: " + getLookupPageSize() +
+        System.out.println("Printing B+ Tree configuration:");
+        System.out.println("Page size: " + pageSize + " (in bytes)");
+        System.out.println("Key size: " + keySize + " (in bytes)");
+        System.out.println("Entry size: " + entrySize + " (in bytes)");
+        System.out.println("File header size: " + headerSize + " (in bytes)");
+        System.out.println("Lookup space size: " + getLookupPageSize() +
                 " (in bytes)");
-        log.info("\nInternal Node Degree: " +
+        System.out.println("Internal Node Degree: " +
                 getTreeDegree() +
                 "\n\t Min cap: " + getMinInternalNodeCapacity() +
                 "\n\t Max cap: " + getMaxInternalNodeCapacity() +
                 "\n\t Total header bytes: " + internalNodeHeaderSize);
 
-        log.info("\nLeaf Node Degree: " +
+        System.out.println("Leaf Node Degree: " +
                 getLeafNodeDegree() +
                 "\n\t Min cap: " + getMinLeafNodeCapacity() +
                 "\n\t Max cap: " + getMaxLeafNodeCapacity() +
                 "\n\t Total header bytes: " + leafHeaderSize);
 
-        log.info("\nOverflow page Degree: " +
+        System.out.println("Overflow page Degree: " +
                 getOverflowPageDegree() +
                 "\n\tExpected cap: " + getMaxOverflowNodeCapacity());
 
-        log.info("\nLookup page overflow Degree" +
+        System.out.println("Lookup page overflow Degree" +
                 getOverflowPageDegree() +
                 "\n\tExpected cap: " + getMaxInternalNodeCapacity());
     }
