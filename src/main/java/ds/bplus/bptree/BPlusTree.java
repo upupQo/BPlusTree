@@ -130,6 +130,7 @@ public class BPlusTree {
 
         // check if our root is full
         if(root.isFull(conf)) {
+            log.info("root is full");
             // allocate a new *internal* node, to be placed as the
             // *left* child of the new root
             aChild = this.root;
@@ -181,9 +182,9 @@ public class BPlusTree {
     private void splitTreeNode(TreeInternalNode n, int index)
             throws IOException, InvalidBTreeStateException {
 
-//        log.info("-- Splitting node with index: " +
-//                aChild.getPageIndex() + " of type: " +
-//                aChild.getNodeType().toString());
+        log.info("-- Splitting node with index: " +
+                aChild.getPageIndex() + " of type: " +
+                aChild.getNodeType().toString());
 
         int setIndex;
         TreeNode znode;
@@ -437,12 +438,12 @@ public class BPlusTree {
             if(n.getCurrentCapacity() > 0 && n.getKeyAt(iadj) == key) {
 
                 if(unique) {
-                    //log.info("Duplicate entry found and unique " +
-                    //        "flag enabled, can't add");
+                    log.info("Duplicate entry found and unique " +
+                            "flag enabled, can't add");
                     return;
                 }
 
-                //log.info("Duplicate found! Adding to overflow page!");
+                log.info("Duplicate found! Adding to overflow page!");
 
                 // overflow page does not exist, yet; time to create it!
                 if(l.getOverflowPointerAt(iadj) < 0) {
@@ -1769,6 +1770,8 @@ public class BPlusTree {
             // write the file
             root.writeNode(treeFile, conf, bPerf);
         }
+        log.info("root: ");
+        root.printNode();
         return(root);
     }
 
@@ -2140,6 +2143,8 @@ public class BPlusTree {
 
         // read the root.
         root = readNode(rootIndex);
+        log.info("read root:");
+        root.printNode();
         // finally if needed create a configuration file
         if(generateConf)
             {return(new BPlusConfiguration(pageSize, keySize, entrySize));}
@@ -2188,6 +2193,7 @@ public class BPlusTree {
                     " bytes), trying to read it...");
             // read the header
             conf = readFileHeader(treeFile, true);
+            conf.printConfiguration();
             // read the lookup page
             initializeLookupPage(f.exists());
             log.info("File seems to be valid. Loaded OK!");
