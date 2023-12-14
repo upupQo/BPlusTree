@@ -1,6 +1,7 @@
 package ds.bplus.bptree;
 
 import ds.bplus.util.InvalidBTreeStateException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -12,6 +13,7 @@ import java.util.LinkedList;
  *
  */
 @SuppressWarnings("unused")
+@Slf4j
 class TreeLeaf extends TreeNode {
     private long nextPagePointer;           // pointer to next leaf in the list
     private long prevPagePointer;           // pointer to prev leaf in the list
@@ -157,21 +159,21 @@ class TreeLeaf extends TreeNode {
 
     @Override
     public void printNode() {
-        System.out.println("\nPrinting node of type: " + getNodeType().toString() +
+        log.info("\nPrinting node of type: " + getNodeType().toString() +
                 " with index: " + getPageIndex());
-        System.out.println("Current node capacity is: " + getCurrentCapacity());
+        log.info("Current node capacity is: " + getCurrentCapacity());
 
-        System.out.println("Next pointer (index): " + getNextPagePointer());
-        System.out.println("Prev pointer (index): " + getPrevPagePointer());
+        log.info("Next pointer (index): " + getNextPagePointer());
+        log.info("Prev pointer (index): " + getPrevPagePointer());
 
-        System.out.println("\nPrinting stored (Key, Value, ovf) tuples:");
+        log.info("\nPrinting stored (Key, Value, ovf) tuples:");
         for(int i = 0; i < keyArray.size(); i++) {
             System.out.print(" (" +
                     keyArray.get(i).toString() + ", " +
                     valueList.get(i) + ", " +
                     overflowList.get(i) + ") ");
         }
-        System.out.println("\n");
+        log.info("\n");
     }
 
 }

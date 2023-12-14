@@ -1,9 +1,12 @@
 package ds.bplus.bptree;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
 @SuppressWarnings("unused")
+@Slf4j
 class TreeLookupOverflowNode extends TreeNode {
 
     private long next; // next pointer
@@ -80,16 +83,16 @@ class TreeLookupOverflowNode extends TreeNode {
 
     @Override
     public void printNode() {
-        System.out.println("\nPrinting node of type: " + getNodeType().toString() +
+        log.info("\nPrinting node of type: " + getNodeType().toString() +
                 " with index: " + getPageIndex());
-        System.out.println("Current node capacity is: " + getCurrentCapacity());
+        log.info("Current node capacity is: " + getCurrentCapacity());
 
-        System.out.println("\nPrinting tuples: \n");
+        log.info("\nPrinting tuples: \n");
         for (Long key : keyArray) {
             System.out.print(key);
         }
 
-        System.out.println("\n");
+        log.info("\n");
 
     }
 }

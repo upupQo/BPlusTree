@@ -1,5 +1,7 @@
 package ds.bplus.bptree;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  *
  * Class that stores all of the configuration parameters for our B+ Tree.
@@ -8,6 +10,7 @@ package ds.bplus.bptree;
  *
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
+@Slf4j
 public class BPlusConfiguration {
 
     private int pageSize;           // page size (in bytes)
@@ -204,30 +207,30 @@ public class BPlusConfiguration {
     }
 
     public void printConfiguration() {
-        System.out.println("\n\nPrinting B+ Tree configuration\n");
-        System.out.println("Page size: " + pageSize + " (in bytes)");
-        System.out.println("Key size: " + keySize + " (in bytes)");
-        System.out.println("Entry size: " + entrySize + " (in bytes)");
-        System.out.println("File header size: " + headerSize + " (in bytes)");
-        System.out.println("Lookup space size: " + getLookupPageSize() +
+        log.info("\n\nPrinting B+ Tree configuration\n");
+        log.info("Page size: " + pageSize + " (in bytes)");
+        log.info("Key size: " + keySize + " (in bytes)");
+        log.info("Entry size: " + entrySize + " (in bytes)");
+        log.info("File header size: " + headerSize + " (in bytes)");
+        log.info("Lookup space size: " + getLookupPageSize() +
                 " (in bytes)");
-        System.out.println("\nInternal Node Degree: " +
+        log.info("\nInternal Node Degree: " +
                 getTreeDegree() +
                 "\n\t Min cap: " + getMinInternalNodeCapacity() +
                 "\n\t Max cap: " + getMaxInternalNodeCapacity() +
                 "\n\t Total header bytes: " + internalNodeHeaderSize);
 
-        System.out.println("\nLeaf Node Degree: " +
+        log.info("\nLeaf Node Degree: " +
                 getLeafNodeDegree() +
                 "\n\t Min cap: " + getMinLeafNodeCapacity() +
                 "\n\t Max cap: " + getMaxLeafNodeCapacity() +
                 "\n\t Total header bytes: " + leafHeaderSize);
 
-        System.out.println("\nOverflow page Degree: " +
+        log.info("\nOverflow page Degree: " +
                 getOverflowPageDegree() +
                 "\n\tExpected cap: " + getMaxOverflowNodeCapacity());
 
-        System.out.println("\nLookup page overflow Degree" +
+        log.info("\nLookup page overflow Degree" +
                 getOverflowPageDegree() +
                 "\n\tExpected cap: " + getMaxInternalNodeCapacity());
     }

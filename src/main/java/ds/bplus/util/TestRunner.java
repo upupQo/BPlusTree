@@ -1,6 +1,7 @@
 package ds.bplus.util;
 
 import ds.bplus.bptree.BPlusTreePerformanceCounter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
  *
  */
 @SuppressWarnings("unused")
+@Slf4j
 public class TestRunner {
 
     /**
@@ -35,13 +37,13 @@ public class TestRunner {
      * @return a valid user option selection
      */
     private static int menuChoice(StandardInputRead sin) {
-        System.out.println("\nSelect from menu\n");
-        System.out.println("\t1) Run default trials");
-        System.out.println("\t2) Run insertion run");
-        System.out.println("\t3) Run deletion run");
-        System.out.println("\t4) Run search run");
-        System.out.println("\t5) Run range query run");
-        System.out.println("\t6) Exit\n");
+        log.info("\nSelect from menu\n");
+        log.info("\t1) Run default trials");
+        log.info("\t2) Run insertion run");
+        log.info("\t3) Run deletion run");
+        log.info("\t4) Run search run");
+        log.info("\t5) Run range query run");
+        log.info("\t6) Exit\n");
         int choice = sin.readPositiveInt("Enter your choice: ");
         while(!(choice > 0 && choice < 7))
             {choice = sin.readPositiveInt("Wrong range, try again: ");}
@@ -111,7 +113,7 @@ public class TestRunner {
                 break;
             }
             default: {
-                System.out.println("Closing program.");
+                log.info("Closing program.");
                 break;
             }
         }
@@ -124,16 +126,16 @@ public class TestRunner {
      * @return the boolean user choice.
      */
     private static boolean isUnique(StandardInputRead sin) {
-        System.out.println("Want unique results?");
-        System.out.println("\t1) Yes");
-        System.out.println("\t2) No");
+        log.info("Want unique results?");
+        log.info("\t1) Yes");
+        log.info("\t2) No");
         int choice = sin.readPositiveInt("Enter your choice: ");
         if(choice == 2) {
             return(false);
         } else if(choice == 1) {
             return(true);
         } else {
-            System.out.println("Wrong choice, using default (Yes)");
+            log.info("Wrong choice, using default (Yes)");
             return(true);
         }
     }
@@ -154,7 +156,7 @@ public class TestRunner {
         int key;
         // get a key to insert
         while((key = sin.readPositiveInt("Enter a valid key: ")) == -1)
-            {System.out.println("Wrong key... try again");}
+            {log.info("Wrong key... try again");}
         // all are verbose
         bPerf.insertIO(key, val, unique, true);
     }
@@ -175,7 +177,7 @@ public class TestRunner {
         int key;
         // get a key to insert
         while((key = sin.readPositiveInt("Enter a valid key: ")) == -1)
-            {System.out.println("Wrong key... try again");}
+            {log.info("Wrong key... try again");}
         // all are verbose
         bPerf.deleteIO(key, unique, true);
         //bPerf.insertIO(key, val, unique, true);
@@ -197,7 +199,7 @@ public class TestRunner {
         int key;
         // get a key to insert
         while((key = sin.readPositiveInt("Enter a valid key: ")) == -1)
-            {System.out.println("Wrong key... try again");}
+            {log.info("Wrong key... try again");}
         // all are verbose
         bPerf.searchIO(key, unique, true);
     }
@@ -218,12 +220,12 @@ public class TestRunner {
         int maxKey;
         // get a key to insert
         while((minKey = sin.readPositiveInt("Enter a valid min key: ")) == -1)
-            {System.out.println("Wrong key... try again");}
+            {log.info("Wrong key... try again");}
         while((maxKey = sin.readPositiveInt("Enter a valid max key: ")) == -1)
-            {System.out.println("Wrong key... try again");}
+            {log.info("Wrong key... try again");}
 
         if(maxKey < minKey)
-            {System.out.println("Can't proceed maxKey < minKey"); return;}
+            {log.info("Can't proceed maxKey < minKey"); return;}
 
         // all are verbose
         bPerf.rangeIO(minKey, maxKey, unique, true);

@@ -104,17 +104,17 @@ class TreeOverflow extends TreeNode {
 
     @Override
     public void printNode() {
-        System.out.println("\nPrinting node of type: " + getNodeType().toString() +
+        log.info("\nPrinting node of type: " + getNodeType().toString() +
                 " with index: " + getPageIndex());
-        System.out.println("Current node capacity is: " + getCurrentCapacity());
+        log.info("Current node capacity is: " + getCurrentCapacity());
 
-        System.out.println("Next pointer (index): " + getNextPagePointer());
-        System.out.println("Prev pointer (index): " + getPrevPagePointer());
+        log.info("Next pointer (index): " + getNextPagePointer());
+        log.info("Prev pointer (index): " + getPrevPagePointer());
 
-        System.out.println("\nPrinting stored values:");
+        log.info("\nPrinting stored values:");
         for(int i = 0; i < keyArray.size(); i++) {
             System.out.print(" " + valueList.get(i) + " ");
         }
-        System.out.println("\n");
+        log.info("\n");
     }
 }

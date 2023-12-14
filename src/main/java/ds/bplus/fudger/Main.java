@@ -5,9 +5,11 @@ import ds.bplus.bptree.BPlusTree;
 import ds.bplus.bptree.BPlusTreePerformanceCounter;
 import ds.bplus.util.InvalidBTreeStateException;
 import ds.bplus.util.TestRunner;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
+@Slf4j
 public class Main {
 
     public static void main(String[] args)
@@ -35,7 +37,7 @@ public class Main {
         else
             {TestRunner.runBench(bPerf);}
 
-        System.out.println("\n -- Total pages in the end: " + bt.getTotalTreePages());
+        log.info("\n -- Total pages in the end: " + bt.getTotalTreePages());
         // finally close it.
         bt.commitTree();
 

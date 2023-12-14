@@ -1,10 +1,12 @@
 package ds.bplus.bptree;
 
 import ds.bplus.util.InvalidBTreeStateException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
+@Slf4j
 public class BPlusTreePerformanceCounter {
     private int totalNodeReads;
     private int totalInternalNodeReads;
@@ -254,21 +256,21 @@ public class BPlusTreePerformanceCounter {
         DeleteResult r = bt.deleteKey(key, unique);
         //bt.searchKey(key, unique);
         if(verbose) {
-            System.out.println("Key " + key +
+            log.info("Key " + key +
                     (r.isFound() ? " has been found" : " was not found"));
             if(r.isFound()) {
-                System.out.println("Number of results returned: " + r.getValues().size());
+                log.info("Number of results returned: " + r.getValues().size());
             }
-            System.out.println("Total page reads for this deletion: " + getPageReads());
-            System.out.println("Total page writes for this deletion: " + getPageWrites());
-            System.out.println("\nBroken down statistics: ");
-            System.out.println("\tInternal node (reads, writes): " +
+            log.info("Total page reads for this deletion: " + getPageReads());
+            log.info("Total page writes for this deletion: " + getPageWrites());
+            log.info("\nBroken down statistics: ");
+            log.info("\tInternal node (reads, writes): " +
                     getInterminentInternalPageReads() + ", " +
                     getInterminentInternalPageWrites());
-            System.out.println("\tLeaf node (reads, writes): " +
+            log.info("\tLeaf node (reads, writes): " +
                     getInterminentLeafPageReads() + ", " +
                     getInterminentInternalPageWrites());
-            System.out.println("\tOverflow node (reads, writes): " +
+            log.info("\tOverflow node (reads, writes): " +
                     getInterminentOverflowPageReads() + ", " +
                     getInterminentOverflowPageWrites());
         }
@@ -294,21 +296,21 @@ public class BPlusTreePerformanceCounter {
         startPageTracking();
         SearchResult r = bt.searchKey(key, unique);
         if(verbose) {
-            System.out.println("Key " + key +
+            log.info("Key " + key +
                     (r.isFound() ? " has been found" : " was not found"));
             if(r.isFound()) {
-                System.out.println("Number of results returned: " + r.getValues().size());
+                log.info("Number of results returned: " + r.getValues().size());
             }
-            System.out.println("Total page reads for this search: " + getPageReads());
-            System.out.println("Total page writes for this search: " + getPageWrites());
-            System.out.println("\nBroken down statistics: ");
-            System.out.println("\tInternal node (reads, writes): " +
+            log.info("Total page reads for this search: " + getPageReads());
+            log.info("Total page writes for this search: " + getPageWrites());
+            log.info("\nBroken down statistics: ");
+            log.info("\tInternal node (reads, writes): " +
                     getInterminentInternalPageReads() + ", " +
                     getInterminentInternalPageWrites());
-            System.out.println("\tLeaf node (reads, writes): " +
+            log.info("\tLeaf node (reads, writes): " +
                     getInterminentLeafPageReads() + ", " +
                     getInterminentInternalPageWrites());
-            System.out.println("\tOverflow node (reads, writes): " +
+            log.info("\tOverflow node (reads, writes): " +
                     getInterminentOverflowPageReads() + ", " +
                     getInterminentOverflowPageWrites());
         }
@@ -334,19 +336,19 @@ public class BPlusTreePerformanceCounter {
         startPageTracking();
         RangeResult rangeQRes =  bt.rangeSearch(minKey, maxKey, unique);
         if(verbose) {
-            System.out.println("Range Query returned: " +
+            log.info("Range Query returned: " +
                     (rangeQRes.getQueryResult() != null ?
                             (rangeQRes.getQueryResult().size()) : "0") + " results");
-            System.out.println("Total page reads for this search: " + getPageReads());
-            System.out.println("Total page writes for this search: " + getPageWrites());
-            System.out.println("\nBroken down statistics: ");
-            System.out.println("\tInternal node (reads, writes): " +
+            log.info("Total page reads for this search: " + getPageReads());
+            log.info("Total page writes for this search: " + getPageWrites());
+            log.info("\nBroken down statistics: ");
+            log.info("\tInternal node (reads, writes): " +
                     getInterminentInternalPageReads() + ", " +
                     getInterminentInternalPageWrites());
-            System.out.println("\tLeaf node (reads, writes): " +
+            log.info("\tLeaf node (reads, writes): " +
                     getInterminentLeafPageReads() + ", " +
                     getInterminentInternalPageWrites());
-            System.out.println("\tOverflow node (reads, writes): " +
+            log.info("\tOverflow node (reads, writes): " +
                     getInterminentOverflowPageReads() + ", " +
                     getInterminentOverflowPageWrites());
         }
@@ -372,16 +374,16 @@ public class BPlusTreePerformanceCounter {
         startPageTracking();
         bt.insertKey(key, value, unique);
         if(verbose) {
-            System.out.println("Total page reads for this insertion: " + getPageReads());
-            System.out.println("Total page writes for this insertion: " + getPageWrites());
-            System.out.println("\nBroken down statistics: ");
-            System.out.println("\tInternal node (reads, writes): " +
+            log.info("Total page reads for this insertion: " + getPageReads());
+            log.info("Total page writes for this insertion: " + getPageWrites());
+            log.info("\nBroken down statistics: ");
+            log.info("\tInternal node (reads, writes): " +
                     getInterminentInternalPageReads() + ", " +
                     getInterminentInternalPageWrites());
-            System.out.println("\tLeaf node (reads, writes): " +
+            log.info("\tLeaf node (reads, writes): " +
                     getInterminentLeafPageReads() + ", " +
                     getInterminentInternalPageWrites());
-            System.out.println("\tOverflow node (reads, writes): " +
+            log.info("\tOverflow node (reads, writes): " +
                     getInterminentOverflowPageReads() + ", " +
                     getInterminentOverflowPageWrites());
         }
@@ -507,43 +509,43 @@ public class BPlusTreePerformanceCounter {
     }
 
     public void printTotalStatistics() {
-        System.out.println("\n !! Printing total recorded statistics !!");
-        System.out.println("\nOperations break down");
-        System.out.println("\n\tTotal insertions: " + totalInsertions);
-        System.out.println("\tTotal searches: " + totalSearches);
-        System.out.println("\tTotal range queries: " + totalRangeQueries);
-        System.out.println("\tTotal performed op count: " + totalOperationCount());
+        log.info("\n !! Printing total recorded statistics !!");
+        log.info("\nOperations break down");
+        log.info("\n\tTotal insertions: " + totalInsertions);
+        log.info("\tTotal searches: " + totalSearches);
+        log.info("\tTotal range queries: " + totalRangeQueries);
+        log.info("\tTotal performed op count: " + totalOperationCount());
 
-        System.out.println("\nTotal I/O break down (this run only)");
-        System.out.println("\nTotal Read statistics");
-        System.out.println("\n\tTotal reads: " + totalNodeReads);
-        System.out.println("\tTotal Internal node reads: " + totalInternalNodeReads);
-        System.out.println("\tTotal Leaf node reads: " + totalLeafNodeReads);
-        System.out.println("\tTotal Overflow node reads: " + totalOverflowReads);
+        log.info("\nTotal I/O break down (this run only)");
+        log.info("\nTotal Read statistics");
+        log.info("\n\tTotal reads: " + totalNodeReads);
+        log.info("\tTotal Internal node reads: " + totalInternalNodeReads);
+        log.info("\tTotal Leaf node reads: " + totalLeafNodeReads);
+        log.info("\tTotal Overflow node reads: " + totalOverflowReads);
 
-        System.out.println("\nTotal Write statistics: ");
-        System.out.println("\n\tTotal writes: " + totalNodeWrites);
-        System.out.println("\tTotal Internal node writes: " + totalInternalNodeWrites);
-        System.out.println("\tTotal Leaf node writes: " + totalLeafNodeWrites);
-        System.out.println("\tTotal Overflow node writes: " + totalOverflowWrites);
+        log.info("\nTotal Write statistics: ");
+        log.info("\n\tTotal writes: " + totalNodeWrites);
+        log.info("\tTotal Internal node writes: " + totalInternalNodeWrites);
+        log.info("\tTotal Leaf node writes: " + totalLeafNodeWrites);
+        log.info("\tTotal Overflow node writes: " + totalOverflowWrites);
 
-        System.out.println("\nPage creation break down.");
-        System.out.println("\n\tTotal pages created: " + totalPages);
-        System.out.println("\tTotal Internal nodes created: " + totalInternalNodes);
-        System.out.println("\tTotal Leaf nodes created: " + totalLeaves);
-        System.out.println("\tTotal Overflow nodes created: " + totalOverflowPages);
+        log.info("\nPage creation break down.");
+        log.info("\n\tTotal pages created: " + totalPages);
+        log.info("\tTotal Internal nodes created: " + totalInternalNodes);
+        log.info("\tTotal Leaf nodes created: " + totalLeaves);
+        log.info("\tTotal Overflow nodes created: " + totalOverflowPages);
 
-        System.out.println("\nPage deletion break down.");
-        System.out.println("\n\tTotal pages deleted: " + totalDeletions);
-        System.out.println("\tTotal Internal nodes deleted: " + totalInternalNodeDeletions);
-        System.out.println("\tTotal Leaf nodes deleted: " + totalLeafNodeDeletions);
-        System.out.println("\tTotal Overflow pages deleted: " + totalOverflowPagesDeletions);
+        log.info("\nPage deletion break down.");
+        log.info("\n\tTotal pages deleted: " + totalDeletions);
+        log.info("\tTotal Internal nodes deleted: " + totalInternalNodeDeletions);
+        log.info("\tTotal Leaf nodes deleted: " + totalLeafNodeDeletions);
+        log.info("\tTotal Overflow pages deleted: " + totalOverflowPagesDeletions);
 
-        System.out.println("\nPage split statistics");
-        System.out.println("\n\tTotal page splits: " + totalSplits);
-        System.out.println("\tActual Root splits: " + totalRootSplits);
-        System.out.println("\tInternal node splits: " + totalInternalNodeSplits);
-        System.out.println("\tLeaf node splits: " + totalLeafSplits);
+        log.info("\nPage split statistics");
+        log.info("\n\tTotal page splits: " + totalSplits);
+        log.info("\tActual Root splits: " + totalRootSplits);
+        log.info("\tInternal node splits: " + totalInternalNodeSplits);
+        log.info("\tLeaf node splits: " + totalLeafSplits);
     }
 
     void resetAllMetrics() {

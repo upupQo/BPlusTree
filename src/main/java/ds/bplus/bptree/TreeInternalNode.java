@@ -107,20 +107,20 @@ class TreeInternalNode extends TreeNode {
 
     @Override
     public void printNode() {
-        System.out.println("\nPrinting node of type: " +
+        log.info("\nPrinting node of type: " +
                 getNodeType().toString() + " with index: " +
                 getPageIndex());
 
-        System.out.println("Current node capacity is: " +
+        log.info("Current node capacity is: " +
                 getCurrentCapacity());
 
-        System.out.println("\nPrinting stored Keys:");
+        log.info("\nPrinting stored Keys:");
         for(Long i : keyArray)
             {System.out.print("\t" + i.toString() + " ");}
-        System.out.println("\nPrinting stored Pointers");
+        log.info("\nPrinting stored Pointers");
         for(Long i : pointerArray)
             {System.out.print(" " + i.toString() + " ");}
-        System.out.println();
+        log.info();
     }
 
 

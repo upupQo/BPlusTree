@@ -41,10 +41,10 @@ class TrialsClass {
             pageWrites += stats[1];
         }
 
-        System.out.println("\nPerformed " + trials + " search trials");
-        System.out.println("\n\tTotal page reads: " + pageReads);
-        System.out.println("\tTotal page writes: " + pageWrites);
-        System.out.println("\tAverage (reads, writes): " + (pageReads/(1.0*trials))
+        log.info("\nPerformed " + trials + " search trials");
+        log.info("\n\tTotal page reads: " + pageReads);
+        log.info("\tTotal page writes: " + pageWrites);
+        log.info("\tAverage (reads, writes): " + (pageReads/(1.0*trials))
                 + ", " + (pageWrites/(1.0*trials)));
     }
 
@@ -79,10 +79,10 @@ class TrialsClass {
             pageWrites += stats[1];
         }
 
-        System.out.println("\nPerformed " + trials + " insertion trials");
-        System.out.println("\n\tTotal page reads: " + pageReads);
-        System.out.println("\tTotal page writes: " + pageWrites);
-        System.out.println("\tAverage (reads, writes): " + (pageReads/(1.0*trials))
+        log.info("\nPerformed " + trials + " insertion trials");
+        log.info("\n\tTotal page reads: " + pageReads);
+        log.info("\tTotal page writes: " + pageWrites);
+        log.info("\tAverage (reads, writes): " + (pageReads/(1.0*trials))
                 + ", " + (pageWrites/(1.0*trials)));
     }
 
@@ -115,10 +115,10 @@ class TrialsClass {
             pageWrites += stats[1];
         }
 
-        System.out.println("\nPerformed " + trials + " Range Query trials");
-        System.out.println("\n\tTotal page reads: " + pageReads);
-        System.out.println("\tTotal page writes: " + pageWrites);
-        System.out.println("\tAverage (reads, writes): " + (pageReads/(1.0*trials))
+        log.info("\nPerformed " + trials + " Range Query trials");
+        log.info("\n\tTotal page reads: " + pageReads);
+        log.info("\tTotal page writes: " + pageWrites);
+        log.info("\tAverage (reads, writes): " + (pageReads/(1.0*trials))
                 + ", " + (pageWrites/(1.0*trials)));
     }
 
@@ -149,10 +149,10 @@ class TrialsClass {
             pageWrites += stats[1];
         }
 
-        System.out.println("\nPerformed " + trials + " deletion trials");
-        System.out.println("\n\tTotal page reads: " + pageReads);
-        System.out.println("\tTotal page writes: " + pageWrites);
-        System.out.println("\tAverage (reads, writes): " + (pageReads/(1.0*trials))
+        log.info("\nPerformed " + trials + " deletion trials");
+        log.info("\n\tTotal page reads: " + pageReads);
+        log.info("\tTotal page writes: " + pageWrites);
+        log.info("\tAverage (reads, writes): " + (pageReads/(1.0*trials))
                 + ", " + (pageWrites/(1.0*trials)));
     }
 }
