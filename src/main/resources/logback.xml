@@ -4,7 +4,7 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} %clr([%-20thread]) [%-5level] [%logger{36}]:%L - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%-20thread] [%-5level] [%logger{36}]:%L - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -26,7 +26,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} %clr([%-20thread]) [%-5level] [%logger{36}]:%L - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%-20thread] [%-5level] [%logger{36}]:%L - %msg%n</pattern>
         </encoder>
     </appender>
 

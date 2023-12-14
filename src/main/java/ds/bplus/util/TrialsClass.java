@@ -1,6 +1,7 @@
 package ds.bplus.util;
 
 import ds.bplus.bptree.BPlusTreePerformanceCounter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
  *
  */
 @SuppressWarnings("unused")
+@Slf4j
 class TrialsClass {
 
     /**

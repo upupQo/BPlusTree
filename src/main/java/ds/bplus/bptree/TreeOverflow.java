@@ -1,5 +1,7 @@
 package ds.bplus.bptree;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
@@ -12,6 +14,7 @@ import java.util.LinkedList;
  * the key array at all (this could be improved but... well...)
  */
 @SuppressWarnings("unused")
+@Slf4j
 class TreeOverflow extends TreeNode {
 
 

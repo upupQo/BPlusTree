@@ -1,5 +1,7 @@
 package ds.bplus.bptree;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.LinkedList;
@@ -11,6 +13,7 @@ import java.util.LinkedList;
  *
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
+@Slf4j
 class TreeInternalNode extends TreeNode {
 
     private final LinkedList<Long> pointerArray;  // the pointer array
@@ -120,7 +123,6 @@ class TreeInternalNode extends TreeNode {
         log.info("\nPrinting stored Pointers");
         for(Long i : pointerArray)
             {System.out.print(" " + i.toString() + " ");}
-        log.info();
     }
 
 
